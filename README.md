@@ -1,11 +1,11 @@
-# 📄 Invoice Data Extractor & Organizer — n8n Automation
+# 📧 AI Email Classifier & Auto Logger — n8n Automation
 
-An automated document processing workflow built using **n8n**, **OCR.space API**, **Google Drive**, **Google Sheets**, and **Telegram Bot API**.
+An intelligent email processing workflow built using **n8n**, **Google Gemini AI**, **Gmail API**, **Google Sheets**, and **Telegram Bot API**.
 
-This system automatically monitors invoice uploads, downloads PDF documents, extracts text using OCR technology, processes invoice information using JavaScript, stores structured data in Google Sheets, and sends real-time notifications after successful processing.
+This system automatically monitors incoming Gmail messages, analyzes email content using AI, classifies emails based on importance and category, stores structured information in Google Sheets, and sends real-time Telegram notifications for high-priority emails.
 
 **Stack:**  
-n8n · OCR.space API · Google Drive · Google Sheets · Telegram Bot · JavaScript · Document Automation
+n8n · Gmail API · Google Gemini AI · Google Sheets · Telegram Bot · JavaScript · AI Automation
 
 
 ---
@@ -15,38 +15,40 @@ n8n · OCR.space API · Google Drive · Google Sheets · Telegram Bot · JavaScr
 
 ## Problem
 
-Businesses process hundreds of invoices containing important information such as:
+Managing large volumes of emails manually creates several challenges:
 
-- Invoice numbers
-- Customer details
-- Dates
-- Payment amounts
+- Important emails can be missed
+- Time wasted reading unnecessary messages
+- Difficult email organization
+- Manual tracking of important conversations
+- Slow response to urgent messages
 
 
-Manual invoice processing creates challenges:
+Common examples:
 
-- Time-consuming data entry
-- Human errors during transcription
-- Difficulty organizing documents
-- Slow financial record updates
+- Job opportunities
+- Client inquiries
+- Business requests
+- Important notifications
 
 
 ---
 
 ## Solution
 
-This project automates invoice data extraction by:
+This project creates an automated AI email triage system by:
 
 
-1. Monitoring invoice uploads
-2. Downloading PDF documents automatically
-3. Extracting text using OCR
-4. Parsing important invoice fields
-5. Storing structured records
-6. Sending processing notifications
+1. Monitoring incoming Gmail messages
+2. Extracting email information
+3. Analyzing emails using Google Gemini AI
+4. Classifying email importance and category
+5. Generating AI summaries
+6. Storing results in Google Sheets
+7. Sending Telegram alerts for important emails
 
 
-The workflow creates a simple document automation pipeline without requiring AI agents.
+The workflow acts as an intelligent assistant that automatically organizes and prioritizes incoming emails.
 
 
 ---
@@ -54,26 +56,35 @@ The workflow creates a simple document automation pipeline without requiring AI 
 # ✨ Features
 
 
-## Document Processing
+## Email Processing
 
-✅ Automatic invoice detection  
-✅ PDF document handling  
-✅ OCR-based text extraction  
-✅ Automated data parsing  
+✅ Automatic Gmail monitoring  
+✅ Incoming email detection  
+✅ Email data extraction  
+✅ Automated email classification  
+
+
+## Artificial Intelligence
+
+✅ Google Gemini AI analysis  
+✅ Email category detection  
+✅ Priority classification  
+✅ AI-generated summaries  
+✅ Structured JSON AI output  
 
 
 ## Data Management
 
-✅ Structured invoice records  
-✅ Google Sheets database  
+✅ Google Sheets email database  
+✅ Structured email records  
+✅ Automatic organization  
 ✅ JSON data transformation  
-✅ Automated organization  
 
 
 ## Notifications
 
-✅ Telegram success alerts  
-✅ Processing status updates  
+✅ Telegram instant alerts  
+✅ Important email notifications  
 ✅ Real-time workflow monitoring  
 
 
@@ -85,342 +96,482 @@ The workflow creates a simple document automation pipeline without requiring AI 
 ```mermaid
 flowchart TD
 
+A["📧 Incoming Gmail"]
 
-A["📁 Invoice PDF Upload"]
-
---> B["☁️ Google Drive Trigger"]
-
-
-B --> C["📥 Download Invoice"]
+--> B["📥 Gmail Trigger"]
 
 
-C --> D["🔍 OCR.space API"]
+B --> C["⚙️ Edit Fields"]
 
 
-D --> E["⚙️ JavaScript Parser"]
+C --> D["🤖 Google Gemini AI"]
 
 
-E --> F["📊 Google Sheets"]
+D --> E["📝 JavaScript JSON Parser"]
 
 
-F --> G["📱 Telegram Notification"]
+E --> F["🔀 IF Important Email?"]
 
-````
+
+F -->|YES| G["⭐ Important Emails Sheet"]
+
+F -->|NO| H["📂 Email Archive Sheet"]
+
+
+G --> I["📱 Telegram Notification"]
+
+```
+
 
 ---
 
 # 🏗️ Workflow Implementation
 
-# Workflow 1: Invoice Processing Pipeline
 
-## Node 1 — Google Drive Trigger
+# Workflow 1: AI Email Classification Pipeline
+
+
+## Node 1 — Gmail Trigger
+
 
 ### Purpose
 
-Monitor a Google Drive folder for new invoice documents.
+Monitor Gmail inbox for newly received emails.
+
 
 Configuration:
 
+
 ```text
 Event:
-File Created
+
+Message Received
 
 
-Folder:
-Invoice Uploads
+Label:
+
+INBOX
+
+
+Polling:
+
+Every Minute
 ```
+
 
 Captured Information:
 
-| Field        | Description             |
-| ------------ | ----------------------- |
-| File Name    | Invoice filename        |
-| File ID      | Google Drive identifier |
-| Created Time | Upload timestamp        |
+
+| Field | Description |
+|---|---|
+| Subject | Email title |
+| Sender | Email source |
+| Snippet | Email preview |
+| Date | Received timestamp |
+
 
 ---
 
-# Node 2 — Download File
+# Node 2 — Edit Fields
+
 
 ### Purpose
 
-Retrieve the uploaded invoice PDF for processing.
+Prepare email information before sending it to Google Gemini AI.
 
-Process:
 
-```text
-Google Drive
+Extracted Data:
 
-      ↓
 
-Invoice PDF Binary Data
+| Field | Description |
+|---|---|
+| Subject | Email subject |
+| Sender | Email sender |
+| Message | Email content preview |
+| Date | Email received time |
 
-      ↓
 
-OCR Processing
+Example:
+
+
+```json
+{
+"subject":
+"Admin VA Job Opportunity",
+
+"sender":
+"Indeed",
+
+"message":
+"Your profile matches this position..."
+}
 ```
+
 
 ---
 
-# Node 3 — HTTP Request (OCR.space API)
+# Node 3 — Google Gemini AI Agent
+
 
 ### Purpose
 
-Convert invoice PDF images into readable text.
-
-Request:
-
-```text
-Method:
-
-POST
+Analyze email content and classify the message using artificial intelligence.
 
 
-Endpoint:
+The AI determines:
 
-https://api.ocr.space/parse/image
-```
 
-Parameters:
+- Email Category
+- Priority Level
+- Importance Status
+- Email Summary
 
-| Parameter | Value             |
-| --------- | ----------------- |
-| API Key   | OCR.space API Key |
-| File      | Invoice PDF       |
-| Language  | English           |
 
 Example Response:
 
+
 ```json
 {
-"ParsedResults":[
-{
-"ParsedText":
-"Invoice # INV-1001
-Date 2026-07-06
-Sample Client
-710000"
-}
-]
+"category":
+"Job Application",
+
+"priority":
+"High",
+
+"important":
+true,
+
+"summary":
+"Invitation to apply for an Admin VA position."
 }
 ```
 
+
 ---
 
-# Node 4 — Code Node
+# Node 4 — Code Node (JSON Parser)
+
 
 ### Purpose
 
-Extract important invoice information from OCR results.
+Convert Gemini AI output into structured data for workflow processing.
+
 
 Processing:
 
-```text
-OCR Text
 
-    ↓
+```text
+Gemini AI Response
+
+        ↓
 
 JavaScript Parsing
 
-    ↓
+        ↓
 
-Structured Invoice Data
+Structured Email Data
 ```
+
 
 Extracted Fields:
 
-| Field          | Description         |
-| -------------- | ------------------- |
-| Invoice Number | Invoice identifier  |
-| Invoice Date   | Transaction date    |
-| Customer       | Billing customer    |
-| Amount         | Total invoice value |
+
+| Field | Description |
+|---|---|
+| Category | Email type |
+| Priority | Importance level |
+| Important | Boolean decision |
+| Summary | AI-generated summary |
+
 
 Example Output:
 
+
 ```json
 {
-"invoiceNumber":
-"INV-1001",
+"category":
+"Job Application",
 
-"date":
-"2026-07-06",
+"priority":
+"High",
 
-"billTo":
-"Sample Client",
+"important":
+true,
 
-"amount":
-"710000"
+"summary":
+"Matching job opportunity detected."
 }
 ```
 
+
 ---
 
-# Node 5 — Google Sheets
+# Node 5 — IF Node
+
 
 ### Purpose
 
-Store processed invoice records.
+Route emails depending on importance.
+
+
+Condition:
+
+
+```javascript
+important == true
+```
+
+
+## TRUE Branch
+
+
+Important emails are:
+
+- Saved to Important Emails Sheet
+- Sent to Telegram
+
+
+## FALSE Branch
+
+
+Normal emails are:
+
+- Saved to Email Archive Sheet
+
+
+---
+
+# Node 6 — Google Sheets
+
+
+### Purpose
+
+Store classified email records.
+
 
 Database Structure:
 
-| Field          | Description     |
-| -------------- | --------------- |
-| Timestamp      | Processing time |
-| Invoice Number | Invoice ID      |
-| Invoice Date   | Invoice date    |
-| Customer       | Client name     |
-| Total Amount   | Invoice value   |
+
+| Field | Description |
+|---|---|
+| Timestamp | Processing time |
+| Subject | Email title |
+| Sender | Email source |
+| Category | AI classification |
+| Priority | Priority level |
+| Summary | AI summary |
+| Important | True/False |
+
 
 Example:
 
-| Invoice  | Customer      | Amount |
-| -------- | ------------- | ------ |
-| INV-1001 | Sample Client | 710000 |
+
+| Subject | Category | Priority |
+|-|-|-|
+| Admin VA Opportunity | Job Application | High |
+
 
 ---
 
-# Node 6 — Telegram Notification
+# Node 7 — Telegram Notification
+
 
 ### Purpose
 
-Notify users after successful invoice processing.
+Send alerts when important emails are detected.
+
 
 Example:
 
+
 ```text
-🧾 Invoice Processed Successfully
+📧 Important Email Detected
 
 
-Invoice Number:
-INV-1001
+📌 Subject:
+
+Admin VA (Airtable Specialist)
 
 
-Customer:
-Sample Client
+👤 From:
+
+Indeed
 
 
-Amount:
-710,000
+📂 Category:
+
+Job Application
 
 
-✅ Saved automatically to Google Sheets.
+⭐ Priority:
 
-⚙ Processed using n8n + OCR automation.
+High
+
+
+📝 Summary:
+
+Your background appears to match an Admin VA position.
+
+
+🤖 Classified automatically using Google Gemini AI.
 ```
+
 
 ---
 
 # 🔐 Credentials Required
 
-| Service           | Purpose                 |
-| ----------------- | ----------------------- |
-| Google OAuth2     | Drive and Sheets access |
-| OCR.space API Key | Text extraction         |
-| Telegram API      | Notifications           |
-| n8n Instance      | Workflow execution      |
+
+| Service | Purpose |
+|---|---|
+| Gmail OAuth2 | Read incoming emails |
+| Google Gemini API | AI classification |
+| Google Sheets OAuth2 | Store email records |
+| Telegram Bot API | Notifications |
+| n8n Instance | Workflow execution |
+
 
 ---
 
 # ⚙️ Setup Guide
 
-## 1. Create Google Drive Folder
 
-Create:
+## 1. Configure Gmail Trigger
 
-```text
-Invoice Uploads
-```
 
-Upload invoice PDFs into this folder.
+Create Gmail OAuth credentials.
 
----
-
-## 2. Configure OCR.space API
-
-Create OCR.space API credentials.
 
 Required:
 
+
 ```text
-API Key
-Language Configuration
+Gmail Account
+
+OAuth2 Authentication
+
+Inbox Access
 ```
 
-Test OCR extraction.
+
+Test incoming email detection.
+
+
+---
+
+## 2. Configure Google Gemini AI
+
+
+Create Gemini API credentials.
+
+
+Required:
+
+
+```text
+Google AI API Key
+
+Gemini Model Access
+```
+
+
+Test AI classification response.
+
 
 ---
 
 ## 3. Create Google Sheets Database
 
+
 Create:
 
+
 ```text
-Invoice Records
+Email Classification Records
 ```
 
+
 Columns:
+
 
 ```text
 Timestamp
 
-Invoice Number
+Subject
 
-Invoice Date
+Sender
 
-Customer
+Category
 
-Total Amount
+Priority
+
+Summary
+
+Important
 ```
+
 
 ---
 
 ## 4. Configure Telegram Bot
 
+
 Steps:
+
 
 1. Create bot using BotFather
 2. Copy bot token
 3. Add Telegram credential in n8n
-4. Configure notification chat ID
+4. Configure chat ID
+
 
 ---
 
 ## 5. Import Workflow
 
+
 Import:
+
 
 ```text
 workflow.json
 ```
 
+
 Configure:
 
-* Google Drive Trigger
-* OCR API
-* Google Sheets
-* Telegram
+
+- Gmail Trigger
+- Gemini API
+- Google Sheets
+- Telegram
+
 
 Activate workflow.
+
 
 ---
 
 # 🧪 Testing Checklist
 
-| Test Case              | Expected Result        |
-| ---------------------- | ---------------------- |
-| Upload invoice PDF     | Workflow starts        |
-| OCR processes document | Text extracted         |
-| Code Node runs         | Invoice fields created |
-| Google Sheets updates  | Record saved           |
-| Telegram sends message | Notification received  |
+
+| Test Case | Expected Result |
+|---|---|
+| Receive Gmail message | Workflow starts |
+| Gemini analyzes email | Classification generated |
+| Code Node executes | JSON created |
+| IF Node checks importance | Correct branch selected |
+| Google Sheets updates | Record saved |
+| Telegram sends message | Notification received |
+
 
 ---
 
 # 📁 Repository Structure
 
+
 ```text
-Invoice-Data-Extractor-Organizer/
+AI-Email-Classifier/
 
 │
 ├── README.md
@@ -430,134 +581,145 @@ Invoice-Data-Extractor-Organizer/
 ├── screenshots/
 │   │
 │   ├── workflow.png
-│   ├── google-drive-trigger.png
-│   ├── download-file.png
-│   ├── ocr-request.png
+│   ├── gmail-trigger.png
+│   ├── gemini-output.png
 │   ├── code-node-output.png
+│   ├── if-node-execution.png
 │   ├── google-sheets.png
 │   ├── telegram-notification.png
 │   └── execution-result.png
 │
-├── assets/
-│   │
-│   ├── sample-invoice.pdf
-│   └── sample-output.json
-│
 └── LICENSE
 ```
+
 
 ---
 
 # 📸 Screenshots
 
+
 Recommended screenshots:
 
+
 * Complete workflow
-* Google Drive Trigger
-* Download File
-* OCR.space API Request
-* OCR Response
-* JavaScript Extraction
-* Google Sheets Database
-* Telegram Notification
-* Workflow Execution
+* Gmail Trigger configuration
+* Gemini AI classification output
+* Code Node JSON parsing
+* IF Node execution
+* Google Sheets records
+* Telegram notification
+* Workflow execution result
+
 
 ---
 
 # 🚀 Future Improvements
 
-| Feature                    | Implementation               |
-| -------------------------- | ---------------------------- |
-| Multi-page Invoice Support | Advanced PDF processing      |
-| Vendor Detection           | Extract supplier information |
-| Currency Detection         | Financial normalization      |
-| Expense Categorization     | Automated accounting tags    |
-| Duplicate Detection        | Invoice matching             |
-| Email Processing           | Process invoice attachments  |
-| Cloud Storage Export       | Archive documents            |
-| Dashboard Analytics        | Invoice reporting            |
-| Multiple OCR Providers     | Azure OCR / Google Vision    |
+
+| Feature | Implementation |
+|---|---|
+| Gmail Auto Labeling | Apply AI-generated labels |
+| AI Reply Generation | Create automatic responses |
+| Attachment Analysis | Process email files |
+| Sentiment Analysis | Detect email tone |
+| Priority Scoring | AI-based ranking system |
+| Slack Integration | Team notifications |
+| Discord Integration | Community alerts |
+| Analytics Dashboard | Email insights |
+| Notion Integration | Knowledge management |
+
 
 ---
 
 # 🎓 Skills Applied
 
+
 ## Automation
 
 * n8n Workflow Automation
-* Document processing pipelines
-* Event-driven automation
+* Event-driven workflows
+* Email processing pipelines
+
+
+## Artificial Intelligence
+
+* Google Gemini API
+* Prompt Engineering
+* AI classification
+* Structured AI output
+
 
 ## APIs
 
-* OCR.space API
-* Google Drive API
+* Gmail API
 * Google Sheets API
 * Telegram Bot API
+
 
 ## Programming
 
 * JavaScript
 * JSON parsing
-* Data extraction
 * Data transformation
+* Conditional workflow logic
+
 
 ## Business Automation
 
-* Invoice processing
-* Digital document management
-* Automated reporting
+* Email management
+* Productivity automation
+* AI-powered workflow systems
+
 
 ---
 
 # 📚 Learning Objectives
 
+
 This project demonstrates:
 
-* Building document automation systems
-* Integrating external APIs with n8n
-* Processing PDF documents
-* Extracting structured information
-* Automating business workflows
+
+* Building AI-powered automation workflows
+* Integrating APIs with n8n
+* Processing email data automatically
+* Creating structured AI outputs
+* Designing business productivity systems
+
 
 ---
 
 # 🙌 Acknowledgements
 
+
 * n8n
-* OCR.space API
-* Google Drive API
+* Google Gemini AI
+* Gmail API
 * Google Sheets API
 * Telegram Bot API
+
 
 ---
 
 # 👨‍💻 Author
 
+
 **Belio C. Sinangote**
 
-BS Information Technology Student
+BS Information Technology Student  
 Cebu Technological University (CTU)
+
 
 GitHub:
 
-[https://github.com/belioautomation](https://github.com/belioautomation)
+https://github.com/belioautomation
 
-This project is part of my **30-Day n8n Automation Portfolio**, showcasing practical workflow automation using n8n, OCR APIs, document processing, and business automation solutions.
+
+This project is part of my **30-Day n8n Automation Portfolio**, showcasing practical automation solutions using **n8n, AI integrations, APIs, and business workflow automation**.
+
 
 ---
 
 # 📄 License
 
+
 MIT License
-
-```
-
-This project is now positioned as a **real business automation workflow** similar to what companies build for:
-- Accounting automation
-- Finance operations
-- Document management
-- Back-office process automation
-
-It also complements your AI projects because it shows you can build both **AI workflows and traditional API automation pipelines**.
-```
