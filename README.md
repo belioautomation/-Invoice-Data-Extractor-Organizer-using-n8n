@@ -1,21 +1,21 @@
 # 📄 Invoice Data Extractor & Organizer using n8n
 
-Automatically monitor a Google Drive folder for newly uploaded invoice PDFs, extract invoice information using **OCR.space API**, organize the data in Google Sheets, and send a Telegram notification whenever a new invoice is processed.
+An automated document processing workflow built with **n8n**, **OCR.space API**, **Google Drive**, **Google Sheets**, and **Telegram**. This project automatically monitors a Google Drive folder for newly uploaded invoice PDFs, extracts invoice information using OCR, organizes the extracted data in Google Sheets, and sends Telegram notifications after successful processing.
 
-Built as part of my **30-Day n8n Automation Portfolio**, this project demonstrates document automation, OCR integration, PDF processing, and workflow automation without relying on AI agents.
+Developed as part of my **30-Day n8n Automation Portfolio**, this workflow demonstrates document automation, OCR integration, PDF processing, and workflow automation without relying on AI agents.
 
 ---
 
 # 📌 Features
 
-* 📁 Automatically detects new PDF invoices in Google Drive
-* 📥 Downloads uploaded PDF files
+* 📁 Monitors Google Drive for newly uploaded invoice PDFs
+* 📥 Downloads PDF invoices automatically
 * 🔍 Extracts invoice text using OCR.space API
-* 🧾 Parses invoice details with a JavaScript Code node
+* 🧾 Parses invoice details with a JavaScript Code Node
 * 📊 Stores extracted data in Google Sheets
 * 📲 Sends Telegram notifications after successful processing
-* ⚡ Fully automated workflow
-* 🆓 Uses OCR.space Free API
+* ⚡ Fully automated invoice processing workflow
+* 🆓 Uses the OCR.space Free API
 
 ---
 
@@ -26,7 +26,7 @@ Built as part of my **30-Day n8n Automation Portfolio**, this project demonstrat
 * Google Drive
 * HTTP Request
 * OCR.space API
-* JavaScript (Code Node)
+* Code Node (JavaScript)
 * Google Sheets API
 * Telegram Bot API
 
@@ -44,7 +44,7 @@ Download File
 HTTP Request (OCR.space API)
       │
       ▼
-Code (Extract Invoice Details)
+Code Node (Extract Invoice Details)
       │
       ▼
 Google Sheets
@@ -59,9 +59,9 @@ Telegram
 
 ## 1. Google Drive Trigger
 
-Monitors a specific Google Drive folder for newly uploaded invoice PDFs.
+Monitors a Google Drive folder for newly uploaded invoice PDFs.
 
-Configuration
+**Configuration**
 
 * Event: File Created
 * Folder: Invoice Uploads
@@ -70,46 +70,33 @@ Configuration
 
 ## 2. Download File
 
-Downloads the uploaded PDF from Google Drive as binary data.
-
-Purpose
-
-* Retrieve the invoice file
-* Pass the binary file to OCR.space
+Downloads uploaded invoice PDFs from Google Drive for processing.
 
 ---
 
 ## 3. HTTP Request (OCR.space API)
 
-Uploads the PDF to OCR.space for text extraction.
+Uploads the PDF invoice to OCR.space for text extraction.
 
-Method
+**Method**
 
-```
+```text
 POST
 ```
 
-Endpoint
+**Endpoint**
 
-```
+```text
 https://api.ocr.space/parse/image
 ```
 
-Headers
+**Required Parameters**
 
-```
-apikey: YOUR_API_KEY
-```
+* API Key
+* Invoice PDF File
+* Language: English
 
-Form Data
-
-```
-file
-language = eng
-isOverlayRequired = false
-```
-
-Expected Output
+### Example OCR Response
 
 ```json
 {
@@ -127,14 +114,14 @@ Expected Output
 
 Extracts important invoice information from the OCR response.
 
-Fields Extracted
+**Extracted Fields**
 
 * Invoice Number
 * Invoice Date
 * Customer
 * Total Amount
 
-Example Output
+### Example Output
 
 ```json
 {
@@ -149,9 +136,9 @@ Example Output
 
 ## 5. Google Sheets
 
-Automatically appends every processed invoice to a spreadsheet.
+Stores all processed invoice information.
 
-Columns
+### Logged Information
 
 | Timestamp | Invoice Number | Invoice Date | Customer | Total Amount |
 | --------- | -------------- | ------------ | -------- | ------------ |
@@ -160,41 +147,28 @@ Columns
 
 ## 6. Telegram
 
-Sends a notification after an invoice has been successfully processed.
+Sends an instant notification after an invoice has been successfully processed.
 
-Example
+### Example Notification
 
-```
+```text
 🧾 Invoice Processed Successfully
 
-📄 Invoice Number:
+Invoice Number:
 INV-1001
 
-📅 Invoice Date:
+Invoice Date:
 2026-07-06
 
-👤 Customer:
+Customer:
 Sample Client
 
-💰 Total Amount:
+Total Amount:
 710,000
 
 ✅ Saved automatically to Google Sheets.
-🤖 Processed by n8n + OCR.space
+🤖 Processed using n8n and OCR.space.
 ```
-
----
-
-# 📊 Google Sheets Structure
-
-| Timestamp | Invoice Number | Invoice Date | Customer | Total Amount |
-| --------- | -------------- | ------------ | -------- | ------------ |
-
-Example
-
-| Timestamp           | Invoice Number | Invoice Date | Customer      | Total Amount |
-| ------------------- | -------------- | ------------ | ------------- | ------------ |
-| 2026-07-06 14:25:32 | INV-1001       | 2026-07-06   | Sample Client | 710,000      |
 
 ---
 
@@ -236,19 +210,6 @@ Include the following screenshots:
 
 ---
 
-# 📄 sample-output.json
-
-```json
-{
-  "invoiceNumber": "INV-1001",
-  "date": "2026-07-06",
-  "billTo": "Sample Client",
-  "amount": "710,000"
-}
-```
-
----
-
 # 🎯 Learning Objectives
 
 This project demonstrates:
@@ -282,7 +243,7 @@ This project demonstrates:
 
 # 📄 License
 
-This project is licensed under the MIT License.
+This project is licensed under the **MIT License**.
 
 ---
 
@@ -293,3 +254,16 @@ This project is licensed under the MIT License.
 * Google Drive API
 * Google Sheets API
 * Telegram Bot API
+
+---
+
+# 👨‍💻 Author
+
+**Belio C. Sinangote**
+
+BS Information Technology Student
+Cebu Technological University (CTU)
+
+GitHub: https://github.com/belioautomation
+
+This project is part of my **30-Day n8n Automation Portfolio**, showcasing practical workflow automation using n8n, OCR APIs, and document processing.
